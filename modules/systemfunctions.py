@@ -1,31 +1,31 @@
-import globalvars as gv
+from modules import globalvars as gv
 import time
 import os
 import subprocess
 
 def mount_samples_rw():
     if gv.SAMPLES_DIR == '/samples': subprocess.call(['mount', '-vo', 'remount,rw', '/samples'])
-    print '/samples has been remounted as READ-WRITE'
+    print('/samples has been remounted as READ-WRITE')
 
 def mount_samples_ro():
     if gv.SAMPLES_DIR == '/samples': subprocess.call(['mount', '-vo', 'remount,ro', '/samples'])
-    print '/samples has been remounted as READ-ONLY'
+    print('/samples has been remounted as READ-ONLY')
 
 def mount_boot_rw():
     if gv.CONFIG_FILE_PATH == "/boot/samplerbox/config.ini": subprocess.call(['mount', '-vo', 'remount,rw', '/boot'])
-    print '/boot has been remounted as READ-WRITE'
+    print('/boot has been remounted as READ-WRITE')
 
 def mount_boot_ro():
     if gv.CONFIG_FILE_PATH == "/boot/samplerbox/config.ini": subprocess.call(['mount', '-vo', 'remount,ro', '/boot'])
-    print '/boot has been remounted as READ-ONLY'
+    print('/boot has been remounted as READ-ONLY')
 
 def mount_root_rw():
     subprocess.call(['mount', '-vo', 'remount,rw', '/'])
-    print '/ has been remounted as READ-WRITE'
+    print('/ has been remounted as READ-WRITE')
 
 def mount_root_ro():
     subprocess.call(['mount', '-vo', 'remount,ro', '/'])
-    print '/ has been remounted as READ-ONLY'
+    print('/ has been remounted as READ-ONLY')
 
 class SystemFunctions:
     def __init__(self):
@@ -85,7 +85,7 @@ class SystemFunctions:
 
         if gv.SYSTEM_MODE == 1: gv.nav.text_scroller.stop()  # stop the text scroller in SYS MODE 1
         shutdown_message = 'GOOD BYE!'.center(gv.LCD_COLS, ' ')
-        for i in xrange(gv.LCD_ROWS):
+        for i in range(gv.LCD_ROWS):
             gv.displayer.disp_change(str_override=shutdown_message, line=(i + 1), timeout=1, is_priority=True)
 
         time.sleep(0.5)
@@ -96,6 +96,6 @@ class SystemFunctions:
 
         if gv.IS_DEBIAN:
             gv.displayer.LCD_SYS.lcd.close(clear=False) # does GPIO.cleanup()
-            print 'GPIO was cleaned up'
+            print('GPIO was cleaned up')
 
         exit()

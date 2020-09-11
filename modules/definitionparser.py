@@ -26,7 +26,7 @@ keywords_dict = {
 
 def get_default(name):
     keyword_item = {}
-    for item in keywords_dict.iteritems():
+    for item in keywords_dict.items():
         if item[1].get('name') == name: keyword_item = item[1]
 
     if keyword_item.get('type') == 'range':
@@ -60,9 +60,9 @@ class DefinitionParser:
 
         self.existing_patterns = self.get_patterns_from_file()
 
-        print '##### Existing definition.txt patterns #####'
-        print self.existing_patterns
-        print '############################################', '\r'
+        print('##### Existing definition.txt patterns #####')
+        print(self.existing_patterns)
+        print('############################################', '\r')
 
     ############################################
     # COMPARE EXISTING
@@ -70,19 +70,19 @@ class DefinitionParser:
     ############################################
 
     def compare_existing_patterns(self):
-        print '\r#### START COMPARING NEW AND INITAL PATTERNS ####'
-        print 'New patterns to save: %s' % str(self.new_patterns)
-        for n, value in self.new_patterns.iteritems():
+        print('\r#### START COMPARING NEW AND INITAL PATTERNS ####')
+        print('New patterns to save: %s' % str(self.new_patterns))
+        for n, value in self.new_patterns.items():
 
             if n in self.existing_patterns:
-                print 'OVERWRITING EXISTING: %s is in the definition.txt already.' \
-                      'Overwritting its value (%s)' % (n, str(value))  # debug
+                print('OVERWRITING EXISTING: %s is in the definition.txt already.' \
+                      'Overwritting its value (%s)' % (n, str(value)))  # debug
                 self.existing_patterns.pop(n)
 
         self.combined_patterns = self.new_patterns.copy()
         self.combined_patterns.update(self.existing_patterns)  # merge self.new_patterns and existing_patters dicts
 
-        print '#### END COMPARING NEW AND INITAL PATTERNS ####\r'
+        print('#### END COMPARING NEW AND INITAL PATTERNS ####\r')
 
     #################
     # SET NEW KEYWORD
@@ -90,8 +90,8 @@ class DefinitionParser:
 
     def set_new_keyword(self, keyword, value):
         keyword = keyword.lower()
-        print '\r\r#### START SETTING NEW KEYWORDS ####\r'
-        print 'Setting %s to %s' % (keyword, str(value))
+        print('\r\r#### START SETTING NEW KEYWORDS ####\r')
+        print('Setting %s to %s' % (keyword, str(value)))
         self.new_patterns[keyword] = value
         # for i, item in self.keywords_dict.iteritems():
         #     for k, v in item.iteritems():
@@ -104,46 +104,46 @@ class DefinitionParser:
         #             else:
         #                 print 'ERROR: %s is not a suitable value for %s' % (value, keyword)  # debug
 
-        print '\r#### END SETTING NEW KEYWORDS ####\r'
+        print('\r#### END SETTING NEW KEYWORDS ####\r')
 
     #########################
     # WRITE DEFINITION FILE #
     #########################
 
     def write_definition_file(self):
-        print '\r#### START WRITING %s/definition.txt ####\r' % self.basename
+        print('\r#### START WRITING %s/definition.txt ####\r' % self.basename)
         sysfunc.mount_samples_rw()  # remount `/samples` as read-write (if using SD card)
         f = open(self.definitionfname, 'w')
-        for keyword, value in self.combined_patterns.iteritems():
+        for keyword, value in self.combined_patterns.items():
             if 'wav_definition' not in keyword:
                 line = keyword + '=' + str(value) + '\n'
                 f.write(line)
-                print line.strip('\n')  # debug
-        for keyword, value in self.combined_patterns.iteritems():  # 2 loops so that wav_definition(s) are last lines
+                print(line.strip('\n'))  # debug
+        for keyword, value in self.combined_patterns.items():  # 2 loops so that wav_definition(s) are last lines
             if 'wav_definition_lines' in keyword: # wav_definition_lines is a dict. ie 'wav_definition_lines': {0:'C.wav', 1:'D.wav'}
-                for k, v in value.iteritems():
+                for k, v in value.items():
                     line = str(v) + '\n'
                     f.write(line)
-                    print line.strip('\n')  # debug
+                    print(line.strip('\n'))  # debug
         f.close()
         sysfunc.mount_samples_ro()  # remount `/samples` back to read-only (if using SD card)
-        print '\r#### END WRITING %s/definition.txt ####\r' % self.basename
+        print('\r#### END WRITING %s/definition.txt ####\r' % self.basename)
 
     ##########################
     # GET PATTERNS FROM FILE #
     ##########################
 
     def get_patterns_from_file(self):
-        print '#### START GET PATTERNS FROM FILE ####'
+        print('#### START GET PATTERNS FROM FILE ####')
         existing_patterns = {}
         existing_patterns['wav_definition_lines'] = {}
         with open(self.definitionfname, 'r') as definitionfile:
             w = 0
             for i, pattern in enumerate(definitionfile):
-                for k, item in self.keywords_dict.iteritems():
+                for k, item in self.keywords_dict.items():
                     keyword = item.get('name')
                     if keyword in pattern:
-                        print 'Found %s' % pattern
+                        print('Found %s' % pattern)
                         value = pattern.split('=')[1].strip() # is a string
                         if item.get('type') == 'range':
                             # if type is range, value will be an int or float
@@ -159,6 +159,6 @@ class DefinitionParser:
                     # existing_patterns['wav_definition_' + str(w)] = pattern.strip('\n')
                     w += 1
 
-        print '#### END GET PATTERNS FROM FILE ####'
+        print('#### END GET PATTERNS FROM FILE ####')
 
         return existing_patterns

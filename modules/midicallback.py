@@ -1,4 +1,4 @@
-import globalvars as gv
+from modules import globalvars as gv
 
 
 class Midi:
@@ -52,7 +52,7 @@ class Midi:
             noteoff = False
 
         if gv.PRINT_MIDI_MESSAGES:
-            print '%d, %d, <%s>' % (message[0], note, src)
+            print('%d, %d, <%s>' % (message[0], note, src))
 
         ##########################################
         # MIDI Learning                          #
@@ -68,8 +68,8 @@ class Midi:
                 all_sys_buttons = [gv.BUTTON_LEFT_MIDI, gv.BUTTON_RIGHT_MIDI, gv.BUTTON_ENTER_MIDI,
                                    gv.BUTTON_CANCEL_MIDI, gv.BUTTON_UP_MIDI, gv.BUTTON_DOWN_MIDI, gv.BUTTON_FUNC_MIDI]
                 if message_to_match in all_sys_buttons:
-                    print 'This MIDI control has been assigned to %s in the config.ini. Will not be mapped.' \
-                          % str(str(message) + src)
+                    print('This MIDI control has been assigned to %s in the config.ini. Will not be mapped.' \
+                          % str(str(message) + src))
                 else:
                     gv.nav.state.sendControlToMap(message, src)
                     return  # don't continue from here
@@ -109,11 +109,11 @@ class Midi:
             try:
                 # Now check for MIDI mappings that the user may have defined from within the menu system
 
-                if midimaps.get(src).has_key(messageKey):
+                if messageKey in midimaps.get(src):
 
                     # Remap note/control to a function
 
-                    if midimaps.get(src).get(messageKey).has_key('fn'):
+                    if 'fn' in midimaps.get(src).get(messageKey):
 
                         try:
                             # Runs method from class. ie ac.master_volume.setvolume(velocity).

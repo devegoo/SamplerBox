@@ -2,8 +2,8 @@
 
 """
 import configparser
-import configdefaultsdict as cdd
-import systemfunctions as sysfunc
+from modules import configdefaultsdict as cdd
+from modules import systemfunctions as sysfunc
 
 class Setup:
     def __init__(self, config_file_path):
@@ -33,11 +33,11 @@ class Setup:
                             value_in_config = False
 
         if value_in_config != None:
-            if self.print_config: print option_name, ' = ', value_in_config
+            if self.print_config: print(option_name, ' = ', value_in_config)
             return value_in_config
 
         else:
-            print 'Error in config.ini @ %s' % option_name
+            print('Error in config.ini @ %s' % option_name)
             pass
 
     def update_config(self, section, option, value):
@@ -144,5 +144,5 @@ class Setup:
 
 
     def build_config_from_defaults(self):
-        for c in self.configdefaults.iteritems():
+        for c in self.configdefaults.items():
             self.update_config(section=c[1].get('section'), option=c[0], value=c[1].get('default'))

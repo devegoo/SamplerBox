@@ -59,6 +59,6 @@ if __name__ == "__main__":
 
     cp = configparser_samplerbox.Setup('../config.ini')
 
-    for c in configdefaults.iteritems():
+    for c in configdefaults.items():
 
         cp.update_config(section=c[1].get('section'), option=c[0], value=c[1].get('default'))

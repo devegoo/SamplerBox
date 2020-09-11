@@ -1,7 +1,7 @@
-import globalvars as gv
+from modules import globalvars as gv
 import os
 import re
-import systemfunctions as sysfunc
+from modules import systemfunctions as sysfunc
 
 IGNORE_FOLDERS = ['System Volume Information', 'System\ Volume\ Information', 'FOUND.000',
                   'FOUND.001', 'FOUND.002', 'FOUND.003', 'FOUND.004', 'FOUND.005', 'FOUND.006',
@@ -26,7 +26,7 @@ class Setlist:
             self.song_folders_list.sort(key=self.natural_sort_key)
             gv.SETLIST_LIST = self.song_folders_list
 
-        for i in xrange(len(gv.SETLIST_LIST)):
+        for i in range(len(gv.SETLIST_LIST)):
             gv.samples_indices.append(i)
 
     def natural_sort_key(self, s):
@@ -53,7 +53,7 @@ class Setlist:
         print('>>>> SETLIST: Writing the setlist to setlist.txt')
         sysfunc.mount_samples_rw()  # remount `/samples` as read-write (if using SD card)
         setlist = open(gv.SETLIST_FILE_PATH, "w")
-        list_to_write = list(filter(None, list_to_write))  # remove empty strings / empty lines
+        list_to_write = list([_f for _f in list_to_write if _f])  # remove empty strings / empty lines
         for song in list_to_write:
             setlist.write(song + '\n')
         setlist.close()
@@ -69,7 +69,7 @@ class Setlist:
         # If it doesn't, mark it by prepending an *asterix and rewrite the setlist file.
 
         songs_in_setlist = open(gv.SETLIST_FILE_PATH).read().splitlines()
-        songs_in_setlist = list(filter(None, songs_in_setlist))  # remove empty strings / empty lines
+        songs_in_setlist = list([_f for _f in songs_in_setlist if _f])  # remove empty strings / empty lines
         changes_in_dir = False
         k = 0
         for song_name in songs_in_setlist:
@@ -85,7 +85,7 @@ class Setlist:
                     continue
                 else:
                     if (i == len(self.song_folders_list) - 1):
-                        print  '>>>> SETLIST: Folder for /%s/ was not found' % song_name
+                        print('>>>> SETLIST: Folder for /%s/ was not found' % song_name)
                         songs_in_setlist[k] = '* ' + song_name.replace('* ', '')
                         changes_in_dir = True
                         break
@@ -102,7 +102,7 @@ class Setlist:
         # Check for new song folders and add them to the end of the setlist
 
         songs_in_setlist = open(gv.SETLIST_FILE_PATH).read().splitlines()
-        songs_in_setlist = list(filter(None, songs_in_setlist))  # remove empty strings / empty lines
+        songs_in_setlist = list([_f for _f in songs_in_setlist if _f])  # remove empty strings / empty lines
         changes_in_dir = False
 
         if (set(songs_in_setlist).intersection(self.song_folders_list) != len(self.song_folders_list) and len(songs_in_setlist) != 0):
@@ -117,23 +117,23 @@ class Setlist:
                         if (song_folder_name == song_name):
                             break
                         elif (i == len(songs_in_setlist) - 1):
-                            print '>>>> SETLIST: New setlist entry for /%s/' % song_folder_name
+                            print('>>>> SETLIST: New setlist entry for /%s/' % song_folder_name)
                             changes_in_dir = True
                             songs_in_setlist.append(song_folder_name)
                             break
                         i += 1
                 else:
-                    print '>>>> SETLIST: /%s/ is not a folder. Skipping.' % song_folder_name
+                    print('>>>> SETLIST: /%s/ is not a folder. Skipping.' % song_folder_name)
         elif (len(songs_in_setlist) == 0):
 
-            print '>>>> SETLIST: Is empty -> adding all foldings'
+            print('>>>> SETLIST: Is empty -> adding all foldings')
 
             for song_folder_name in self.song_folders_list:
                 # check if entry is a dir, and not a system dir and that dir is not empty
                 if os.path.isdir(gv.SAMPLES_DIR + '/' + song_folder_name) \
                         and song_folder_name not in IGNORE_FOLDERS \
                         and os.listdir(gv.SAMPLES_DIR + '/' + song_folder_name) != []:
-                    print '>>>> SETLIST: Adding /%s/' % song_folder_name
+                    print('>>>> SETLIST: Adding /%s/' % song_folder_name)
                     songs_in_setlist.append(song_folder_name)
                     changes_in_dir = True
 
