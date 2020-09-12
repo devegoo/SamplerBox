@@ -1,4 +1,4 @@
-import globalvars as gv
+from modules import globalvars as gv
 
 lastbuttontime = 0
 buttfunc = 0
