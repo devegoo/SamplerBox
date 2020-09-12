@@ -2,7 +2,7 @@
 ##  LCD DISPLAY
 #########################################
 
-import globalvars as gv
+from modules import globalvars as gv
 import threading
 import sys
 import time
